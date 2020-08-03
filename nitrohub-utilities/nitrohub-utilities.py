@@ -9,7 +9,7 @@ class NitroHub(commands.Cog):
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.group(invoke_without_command=True)
-    async def partnerrole(self, ctx, *):
+    async def partnerrole(self, ctx):
         """Checks the partner role"""
         role = (await self.db.find_one({'_id': 'config'}))['nitrohub']['partner']
         if role:
@@ -19,7 +19,7 @@ class NitroHub(commands.Cog):
 
     @partnerrole.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def partnerrole_set(self, ctx, role: discord.Role, *, message):
+    async def partnerrole_set(self, ctx, *, role: discord.Role):
         """Sets the partner role"""
         await self.db.find_one_and_update(
             {'_id': 'config'},
@@ -31,7 +31,7 @@ class NitroHub(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def addpartner(self, ctx, *):
+    async def addpartner(self, ctx):
         """Adds the partner role to the thread recipient"""
         role = (await self.db.find_one({'_id': 'config'}))['nitrohub']['partner']
         if role:
@@ -47,7 +47,7 @@ class NitroHub(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def removepartner(self, ctx, *):
+    async def removepartner(self, ctx):
         """Removes the partner role from the thread recipient"""
         role = (await self.db.find_one({'_id': 'config'}))['nitrohub']['partner']
         if role:
