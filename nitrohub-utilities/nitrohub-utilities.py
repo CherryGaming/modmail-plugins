@@ -13,9 +13,9 @@ class NitroHub(commands.Cog):
     @commands.group(invoke_without_command=True)
     async def partnerrole(self, ctx):
         """Checks the partner role"""
-        role = (await self.db.find_one({'_id': 'config'}))['nitrohub']['partner']
-        if role:
-            await ctx.send(embed=discord.Embed(description="The partner role is <@&"+role+">", color=0x9b59b6))
+        roles = (await self.db.find_one({'_id': 'config'}))['nitrohub']
+        if roles:
+            await ctx.send(embed=discord.Embed(description="The partner role is <@&"+roles['partner']+">", color=0x9b59b6))
         else:
             await ctx.send(embed=discord.Embed(description="There isn't a partner role set\nAdmins can set it with `partnerrole set [role]`", color=0x9b59b6))
 
@@ -28,21 +28,21 @@ class NitroHub(commands.Cog):
             {'$set': {'nitrohub': {'partner': str(role.id)}}},
             upsert=True
         )
-        await ctx.send(embed=discord.Embed(description="Added <@&"+self.partner_role+"> to "+ctx.thread.recipient, color=0x9b59b6))
+        await ctx.send(embed=discord.Embed(description="The partner role is now "+role, color=0x9b59b6))
     
     @commands.command()
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
     async def addpartner(self, ctx):
         """Adds the partner role to the thread recipient"""
-        role = (await self.db.find_one({'_id': 'config'}))['nitrohub']['partner']
-        if role:
+        roles = (await self.db.find_one({'_id': 'config'}))['nitrohub']
+        if roles:
             async with ctx.typing():
                 try:
-                    await ctx.thread.recipient.add_roles("681051722692427816", reason="Role added by "+ctx.author.display_name+" ("+ctx.author.username+"#"+ctx.author.discriminator+") ["+ctx.author.id+"]") 
-                    await ctx.send(embed=discord.Embed(description="Added <@&"+self.partner_role+"> to "+ctx.thread.recipient, color=0x9b59b6))
+                    await ctx.thread.recipient.add_roles(roles['partner'], reason="Role added by "+ctx.author.display_name+" ("+ctx.author.username+"#"+ctx.author.discriminator+") ["+ctx.author.id+"]") 
+                    await ctx.send(embed=discord.Embed(description="Added <@&"+roles['partner']+"> to "+ctx.thread.recipient, color=0x9b59b6))
                 except:
-                    await ctx.send(embed=discord.Embed(description="Failed to add <@&"+self.partner_role+"> to "+ctx.thread.recipient, color=0xff0000))
+                    await ctx.send(embed=discord.Embed(description="Failed to add <@&"+roles['partner']+"> to "+ctx.thread.recipient, color=0xff0000))
         else:
             await ctx.send(embed=discord.Embed(description="Partner role not found", color=0xff0000))
     
@@ -51,14 +51,14 @@ class NitroHub(commands.Cog):
     @checks.thread_only()
     async def removepartner(self, ctx):
         """Removes the partner role from the thread recipient"""
-        role = (await self.db.find_one({'_id': 'config'}))['nitrohub']['partner']
-        if role:
+        roles = (await self.db.find_one({'_id': 'config'}))['nitrohub']
+        if roles:
             async with ctx.typing():
                 try:
-                    await ctx.thread.recipient.add_roles("681051722692427816", reason="Role removed by "+ctx.author.display_name+" ("+ctx.author.username+"#"+ctx.author.discriminator+") ["+ctx.author.id+"]") 
-                    await ctx.send(embed=discord.Embed(description="Removed <@&"+self.partner_role+"> from "+ctx.thread.recipient, color=0x9b59b6))
+                    await ctx.thread.recipient.add_roles(roles['partner'], reason="Role removed by "+ctx.author.display_name+" ("+ctx.author.username+"#"+ctx.author.discriminator+") ["+ctx.author.id+"]") 
+                    await ctx.send(embed=discord.Embed(description="Removed <@&"+roles['partner']+"> from "+ctx.thread.recipient, color=0x9b59b6))
                 except:
-                    await ctx.send(embed=discord.Embed(description="Failed to remove <@&"+self.partner_role+"> from "+ctx.thread.recipient, color=0xff0000))
+                    await ctx.send(embed=discord.Embed(description="Failed to remove <@&"+roles['partner']+"> from "+ctx.thread.recipient, color=0xff0000))
         else:
             await ctx.send(embed=discord.Embed(description="Partner role not found", color=0xff0000))
 
