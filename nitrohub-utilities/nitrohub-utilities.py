@@ -19,7 +19,7 @@ class NitroHub(commands.Cog):
         else:
             await ctx.send(embed=discord.Embed(description="There isn't a partner role set\nAdmins can set it with `partnerrole set [role]`", color=0x9b59b6))
 
-    @partnerrole.command()
+    @partner_role.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def partnerrole_set(self, ctx, *, role: discord.Role):
         """Sets the partner role"""
