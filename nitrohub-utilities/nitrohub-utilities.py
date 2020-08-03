@@ -17,7 +17,7 @@ class NitroHub(commands.Cog):
             roles = ((await self.db.find_one({'_id': 'config'})) or {})['nitrohub']
             await ctx.send(embed=discord.Embed(description="The partner role is <@&"+roles['partner']+">", color=0x9b59b6))
         except KeyError:
-            await ctx.send(embed=discord.Embed(description="There isn't a partner role set\nAdmins can set it with `partnerrole set [role]`", color=0x9b59b6))
+            await ctx.send(embed=discord.Embed(description="There isn't a partner role set\nAdmins can set it with `partner_role set [role]`", color=0x9b59b6))
 
     @partner_role.command(name="set")
     @checks.has_permissions(PermissionLevel.ADMIN)
