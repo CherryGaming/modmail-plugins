@@ -14,7 +14,7 @@ class FumplePartnershipRole(commands.Cog):
     async def partner_role(self, ctx):
         """Checks the partner role"""
         try:
-            roles = ((await self.db.find_one({'_id': 'config'})) or {})['nitrohub']
+            roles = ((await self.db.find_one({'_id': 'config'})) or {})['fumpleroles']
             await ctx.send(embed=discord.Embed(description="The partner role is <@&"+roles['partner']+">", color=0x9b59b6))
         except KeyError:
             await ctx.send(embed=discord.Embed(description="There isn't a partner role set\nAdmins can set it with `partner_role set [role]`", color=0x9b59b6))
@@ -25,7 +25,7 @@ class FumplePartnershipRole(commands.Cog):
         """Sets the partner role"""
         await self.db.find_one_and_update(
             {'_id': 'config'},
-            {'$set': {'nitrohub': {'partner': str(role.id)}}},
+            {'$set': {'fumpleroles': {'partner': str(role.id)}}},
             upsert=True
         )
         await ctx.send(embed=discord.Embed(description="The partner role is now "+role.mention, color=0x9b59b6))
@@ -36,7 +36,7 @@ class FumplePartnershipRole(commands.Cog):
     async def add_partner(self, ctx):
         """Adds the partner role to the thread recipient"""
         try:
-            roles = ((await self.db.find_one({'_id': 'config'})) or {})['nitrohub']
+            roles = ((await self.db.find_one({'_id': 'config'})) or {})['fumpleroles']
             try:
                 await ctx.guild.get_member(ctx.thread.recipient.id).add_roles(ctx.guild.get_role(int(roles['partner'])), reason="Role added by "+ctx.author.display_name+" ("+ctx.author.name+"#"+ctx.author.discriminator+") ["+str(ctx.author.id)+"]")
                 await ctx.send(embed=discord.Embed(description="Added <@&"+roles['partner']+"> to "+ctx.thread.recipient.mention, color=0x9b59b6))
@@ -51,7 +51,7 @@ class FumplePartnershipRole(commands.Cog):
     async def remove_partner(self, ctx):
         """Removes the partner role from the thread recipient"""
         try:
-            roles = ((await self.db.find_one({'_id': 'config'})) or {})['nitrohub']
+            roles = ((await self.db.find_one({'_id': 'config'})) or {})['fumpleroles']
             try:
                 await ctx.guild.get_member(ctx.thread.recipient.id).remove_roles(ctx.guild.get_role(int(roles['partner'])), reason="Role removed by "+ctx.author.display_name+" ("+ctx.author.name+"#"+ctx.author.discriminator+") ["+str(ctx.author.id)+"]") 
                 await ctx.send(embed=discord.Embed(description="Removed <@&"+roles['partner']+"> from "+ctx.thread.recipient.mention, color=0x9b59b6))
