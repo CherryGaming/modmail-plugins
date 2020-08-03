@@ -11,9 +11,9 @@ class NitroHub(commands.Cog):
         self.db = bot.plugin_db.get_partition(self)
 
     @commands.group(invoke_without_command=True)
-    async def partnerrole(self, ctx):
+    async def partner_role(self, ctx):
         """Checks the partner role"""
-        roles = (await self.db.find_one({'_id': 'config'}))['nitrohub']
+        roles = ((await self.db.find_one({'_id': 'config'})) or {})['nitrohub']
         if roles:
             await ctx.send(embed=discord.Embed(description="The partner role is <@&"+roles['partner']+">", color=0x9b59b6))
         else:
@@ -30,12 +30,12 @@ class NitroHub(commands.Cog):
         )
         await ctx.send(embed=discord.Embed(description="The partner role is now "+role, color=0x9b59b6))
     
-    @commands.command()
+    @commands.command(aliases=["apartner", "addpartner"])
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def addpartner(self, ctx):
+    async def add_partner(self, ctx):
         """Adds the partner role to the thread recipient"""
-        roles = (await self.db.find_one({'_id': 'config'}))['nitrohub']
+        roles = ((await self.db.find_one({'_id': 'config'})) or {})['nitrohub']
         if roles:
             async with ctx.typing():
                 try:
@@ -46,12 +46,12 @@ class NitroHub(commands.Cog):
         else:
             await ctx.send(embed=discord.Embed(description="Partner role not found", color=0xff0000))
     
-    @commands.command()
+    @commands.command(aliases=["rpartner", "removepartner"])
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def removepartner(self, ctx):
+    async def remove_partner(self, ctx):
         """Removes the partner role from the thread recipient"""
-        roles = (await self.db.find_one({'_id': 'config'}))['nitrohub']
+        roles = ((await self.db.find_one({'_id': 'config'})) or {})['nitrohub']
         if roles:
             async with ctx.typing():
                 try:
