@@ -21,7 +21,7 @@ class NitroHub(commands.Cog):
 
     @partner_role.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def partnerrole_set(self, ctx, *, role: discord.Role):
+    async def partner_role_set(self, ctx, *, role: discord.Role):
         """Sets the partner role"""
         await self.db.find_one_and_update(
             {'_id': 'config'},
