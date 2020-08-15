@@ -4,7 +4,7 @@ from discord.ext import commands
 from core import checks
 from core.models import PermissionLevel
 
-class FumplePartnershipRole(commands.Cog):
+class PartnershipRole(commands.Cog):
     """Provides commands for giving/taking away a partner role in a thread"""
     def __init__(self, bot):
         self.bot = bot
@@ -61,4 +61,4 @@ class FumplePartnershipRole(commands.Cog):
             await ctx.send(embed=discord.Embed(description="Partner role not found", color=0xff0000))
 
 def setup(bot):
-    bot.add_cog(FumplePartnershipRole(bot))
+    bot.add_cog(PartnershipRole(bot))
