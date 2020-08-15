@@ -38,7 +38,7 @@ class PartnershipRole(commands.Cog):
         try:
             roles = ((await self.db.find_one({'_id': 'config'})) or {})['fumpleroles']
             try:
-                await bot.guild.get_member(ctx.thread.recipient.id).add_roles(bot.guild.get_role(int(roles['partner'])), reason="Role added by "+ctx.author.display_name+" ("+ctx.author.name+"#"+ctx.author.discriminator+") ["+str(ctx.author.id)+"]")
+                await self.bot.guild.get_member(ctx.thread.recipient.id).add_roles(self.bot.guild.get_role(int(roles['partner'])), reason="Role added by "+ctx.author.display_name+" ("+ctx.author.name+"#"+ctx.author.discriminator+") ["+str(ctx.author.id)+"]")
                 await ctx.send(embed=discord.Embed(description="Added <@&"+roles['partner']+"> to "+ctx.thread.recipient.mention, color=0x9b59b6))
             except discord.Forbidden:
                 await ctx.send(embed=discord.Embed(description="Failed to add <@&"+roles['partner']+"> to "+ctx.thread.recipient.mention, color=0xff0000))
@@ -53,7 +53,7 @@ class PartnershipRole(commands.Cog):
         try:
             roles = ((await self.db.find_one({'_id': 'config'})) or {})['fumpleroles']
             try:
-                await bot.guild.get_member(ctx.thread.recipient.id).remove_roles(bot.guild.get_role(int(roles['partner'])), reason="Role removed by "+ctx.author.display_name+" ("+ctx.author.name+"#"+ctx.author.discriminator+") ["+str(ctx.author.id)+"]") 
+                await self.bot.guild.get_member(ctx.thread.recipient.id).remove_roles(self.bot.guild.get_role(int(roles['partner'])), reason="Role removed by "+ctx.author.display_name+" ("+ctx.author.name+"#"+ctx.author.discriminator+") ["+str(ctx.author.id)+"]") 
                 await ctx.send(embed=discord.Embed(description="Removed <@&"+roles['partner']+"> from "+ctx.thread.recipient.mention, color=0x9b59b6))
             except discord.Forbidden:
                 await ctx.send(embed=discord.Embed(description="Failed to remove <@&"+roles['partner']+"> from "+ctx.thread.recipient.mention, color=0xff0000))
